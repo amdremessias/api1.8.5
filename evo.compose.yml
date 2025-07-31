@@ -1,0 +1,29 @@
+version: '3.2'
+
+services:
+  api:
+    container_name: evolution_api
+    # Usando a imagem pré-construída 'atendai/evolution-api:v1.8.5' conforme solicitado.
+    # A instrução 'build' foi removida, pois estamos usando uma imagem existente.
+    image: atendai/evolution-api:v1.8.5
+    restart: always
+    ports:
+      - 8080:8080
+    volumes:
+      - evolution_instances:/evolution/instances
+      - evolution_store:/evolution/store
+    networks:
+      - chatwoot_default
+    env_file:
+      - ./Docker/.env
+    # Certifique-se de que o caminho 'dist/src/main.js' está correto para a imagem.
+    command: ['node', './dist/src/main.js']
+    expose:
+      - 8080
+
+volumes:
+  evolution_instances:
+  evolution_store:
+
+networks:
+  chatwoot_default:
